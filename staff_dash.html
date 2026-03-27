@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard | Blood Bank</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        :root {
+            --blood-red: #d32f2f;
+            --dark-red: #b71c1c;
+            --soft-bg: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--soft-bg);
+            color: #333;
+        }
+
+        .navbar {
+            background-color: white !important;
+            border-bottom: 3px solid var(--blood-red);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .navbar-brand {
+            color: var(--blood-red) !important;
+            font-weight: 700;
+        }
+
+        .card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .btn-primary {
+            background-color: var(--blood-red);
+            border: none;
+            font-weight: 600;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--dark-red);
+        }
+
+        .badge-eligible {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg mb-5">
+    <div class="container">
+        <a class="navbar-brand" href="#">🩸 BLOOD LINK PRO</a>
+        <div class="ms-auto">
+            <span class="me-3 text-muted small text-uppercase fw-bold">Staff: {{ session['username'] }}</span>
+            <a href="/logout" class="btn btn-outline-danger btn-sm">Logout</a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="row g-4">
+        
+        <div class="col-lg-4">
+            <div class="card p-4">
+                <h5 class="mb-4 fw-bold">Register New Donor</h5>
+                <form action="/add_donor" method="POST">
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Full Name</label>
+                        <input type="text" name="name" class="form-control bg-light border-0" placeholder="Enter name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Blood Group</label>
+                        <select name="blood_group" class="form-select bg-light border-0">
+                            <option value="A+">A+</option><option value="A-">A-</option>
+                            <option value="B+">B+</option><option value="B-">B-</option>
+                            <option value="O+">O+</option><option value="O-">O-</option>
+                            <option value="AB+">AB+</option><option value="AB-">AB-</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-muted small fw-bold">Last Donation Date</label>
+                        <input type="date" name="last_date" class="form-control bg-light border-0" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 mt-2 py-2">Add to Registry</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
+            <div class="table-container shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="fw-bold mb-0">Active Donor Registry</h5>
+                    <span class="badge bg-light text-dark">{{ donors|length }} Donors Listed</span>
+                </div>
+                <div class="table-responsive">
+                    <table class="table align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="border-0">Donor Name</th>
+                                <th class="border-0">Group</th>
+                                <th class="border-0">Next Eligible</th>
+                                <th class="border-0 text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for donor in donors %}
+                            <tr>
+                                <td><span class="fw-bold text-dark">{{ donor[1] }}</span></td>
+                                <td><span class="badge rounded-pill bg-danger px-3">{{ donor[2] }}</span></td>
+                                <td><span class="badge badge-eligible">{{ donor[4] }}</span></td>
+                                <td class="text-end">
+                                    <a href="/delete_donor/{{ donor[0] }}" class="btn btn-sm btn-link text-danger text-decoration-none fw-bold" onclick="return confirm('Remove this donor permanently?')">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
