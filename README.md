@@ -21,7 +21,6 @@ In many campus or local blood drives, tracking **donor eligibility** is manual a
 ##  Architecture
 
 
-
 **Blood Link Pro** follows a clean **Model-View-Controller (MVC)** pattern:
 - **Models:** MySQL tables (`users`, `donors`) ensuring data persistence.
 - **Views:** Jinja2 templates styled with Bootstrap 5 for a mobile-responsive UI.
@@ -37,7 +36,6 @@ In many campus or local blood drives, tracking **donor eligibility** is manual a
 
 ### 2. Database Initialization
 Execute the following in **MySQL Workbench**:
-```sql
 CREATE DATABASE blood_bank;
 -- Import schema.sql found in the root directory
 
